@@ -1,0 +1,305 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <title>{% block titulo_principal %} VIRTUAL BLOG {% endblock titulo_principal %}</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open Sans">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="shortcut icon" href={% static 'assets/img/favicon.png' %}>
+<style>
+h1,h2,h3,h4,h5,h6 {font-family: "Oswald"}
+body {font-family: "Open Sans"}
+</style>
+<body class="w3-light-grey">
+
+<!-- Navigation bar with social media icons -->
+<div class="w3-top">
+    <div class="w3-row w3-padding w3-black">
+      <div class="w3-col s3">
+        <a href="{% url 'blog:index' %}" class="w3-button w3-block w3-black">INICIO</a>
+      </div>
+      <div class="w3-col s3">
+        <a href="{% url 'blog:notas' %}" class="w3-button w3-block w3-black">NOTAS</a>
+      </div>
+      <div class="w3-col s3">
+        <a href="https://www.w3schools.com/" class="w3-button w3-block w3-black">CURSOS</a>
+      </div>
+      <div class="w3-col s3">
+        <a href="https://stackoverflow.com/" class="w3-button w3-block w3-black"> FORO</a>
+      </div>
+    </div>
+  </div>
+  
+<!-- w3-content defines a container for fixed size centered content, 
+and is wrapped around the whole page content, except for the footer in this example -->
+<div class="w3-content" style="max-width:1600px">
+
+  <!-- Header -->
+  <header class="w3-container w3-center w3-padding-48 w3-white">
+    <h1 class="w3-xxxlarge"><b>{% block titulo %}VIRTUAL BLOG{% endblock titulo %}</b></h1>
+    <h6>¡El mejor blog para estudiantes universitarios de T.I! <span class="w3-tag">CUCEA</span></h6>
+  </header>
+
+  <!-- Image header -->
+  <header class="w3-display-container w3-wide" id="home">
+    <img class="w3-image" src="{% static 'assets/img/banner3.jpg' %}" alt="Fashion Blog" width="1600" height="1060">
+    <div class="w3-display-middle w3-padding-large">
+      <h1 class="w3-text-white"> Universidad de Guadalajara </h1>
+      <h1 class="w3-jumbo w3-text-white w3-hide-small"><b>  VIRTUAL BLOG</b></h1>
+      <h6><button class="w3-button w3-white w3-padding-large w3-large w3-opacity w3-hover-opacity-off" onclick="document.getElementById('subscribe').style.display='block'">SUBSCRIBETE</button></h6>
+    </div>
+  </header>
+
+  <!-- Grid -->
+  <div class="w3-row w3-padding w3-border">
+
+    <!-- Blog entries -->
+    <div class="w3-col l8 s12">
+    
+      <!-- Blog entry -->
+      {% block contenido %}
+      {% if posts %}
+      {% for post in posts %}
+      <div class="w3-container w3-white w3-margin w3-padding-large">
+        <div class="w3-center">  
+            <a href="{% url 'blog:detalle_post' post.slug %}">
+          <h3>{{ post.titulo }}</h3>
+          <h5>Escrito por {{ post.autor }} <span class="w3-opacity"> el {{ post.fecha_creacion }}</span></h5>
+       
+        </div>
+        <div class="w3-justify">
+          <img src="{{ post.imagen }}" style="width:100%" class="w3-padding-16">
+        </a>        
+          <p>{{ post.descripcion }} </p>
+          <p class="w3-left"><button class="w3-button w3-white w3-border" onclick="likeFunction(this)"><b><i class="fa fa-thumbs-up"></i> Like</b></button></p>
+          <p class="w3-right"><button class="w3-button w3-black" onclick="myFunction('demo3')"><b> Comentarios  </b> <span class="w3-tag w3-white">3</span></button></p>
+          <p class="w3-clear"></p>
+        
+          <!-- Example of comment field -->
+          <div id="demo3" style="display:none">
+            <hr>
+            <div class="w3-row w3-margin-bottom">
+              <div class="w3-col l2 m3">
+                <img src="{% static 'assets/img/p1.jpg' %}" style="width:90px;">
+              </div>
+              <div class="w3-col l10 m9">
+                <h4>Tamara Chavez <span class="w3-opacity w3-medium">April 10, 2021, 7:22 PM</span></h4>
+                <p>Excelente Informacion.</p>
+              </div>
+            </div>
+            <div class="w3-row w3-margin-bottom">
+              <div class="w3-col l2 m3">
+                <img src="{% static 'assets/img/p2.jpg' %}" style="width:90px;">
+              </div>
+              <div class="w3-col l10 m9">
+                <h4>Chiwis Dominguez <span class="w3-opacity w3-medium">April 8, 2021, 10:32 PM</span></h4>
+                <p>¿Podrían subir un curso de Java?.</p>
+              </div>
+            </div>
+            <div class="w3-row w3-margin-bottom">
+              <div class="w3-col l2 m3">
+                <img src="{% static 'assets/img/p3.jpg' %}" style="width:90px;">
+              </div>
+              <div class="w3-col l10 m9">
+                <h4>Alberto Guadalupe <span class="w3-opacity w3-medium">April 7, 2021, 9:12 PM</span></h4>
+                <p>Me encantan las nuevas tecnlogías</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+        <h1>No existen post registrados!</h1>
+      {% endif %}
+      {% endblock contenido %}
+      <hr>
+        <!-- Blog entry -->
+        <div class="w3-container w3-white w3-margin w3-padding-large">
+            <div class="w3-center">
+              <h3>Los mejores tips para resolver el examen Ceneval
+            </h3>
+              <h5>Escrito por Jorge Lopez <span class="w3-opacity">el 25 de Noviembre del 2021</span></h5>
+            </div>
+    
+            <div class="w3-justify">
+              <img src="{% static 'assets/img/nota.jpg' %}" alt="Girl Hat" style="width:100%" class="w3-padding-16">
+              <p><strong>Antes que nada, estudia muy bien</strong> </p>
+              <p class="w3-left"><button class="w3-button w3-white w3-border" onclick="likeFunction(this)"><b><i class="fa fa-thumbs-up"></i> Like</b></button></p>
+              <p class="w3-right"><button class="w3-button w3-black" onclick="myFunction('demo1')" id="myBtn"><b>Replies  </b> <span class="w3-tag w3-white">1</span></button></p>
+              <p class="w3-clear"></p>
+              <div class="w3-row w3-margin-bottom" id="demo1" style="display:none">
+                <hr>
+                  <div class="w3-col l2 m3">
+                    <img src="{% static 'assets/img/p4.jpg' %}" style="width:90px;">
+                  </div>
+                  <div class="w3-col l10 m9">
+                    <h4>Lupe Cuaktro <span class="w3-opacity w3-medium">May 3, 2015, 6:32 PM</span></h4>
+                    <p>Increible post</p>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+    <!-- END BLOG ENTRIES -->
+    </div>
+
+  
+
+    <!-- About/Information menu -->
+    <div class="w3-col l4">
+      <!-- About Card -->
+      <div class="w3-white w3-margin">
+        <img src="{% static 'assets/img/virtual.jpg' %}" alt="Jane" style="width:100%" >
+        <div class="w3-container w3-black">
+          <h4>Virtual Blog</h4>
+          <p>Virtual blog fue creado por la necesidad de los estudiantes de T.I de encontrar información mas especifica
+              a los temas desarrollados dentro de la carrera, cuenta con una sección de notas importantes, una seccion de cursos para aterrizar 
+              o reforzar el conocmiento y un foro para solucionar dudas.
+          </p>
+        </div>
+      </div>
+      <hr>
+
+      <!-- Posts -->
+      <div class="w3-white w3-margin">
+        <div class="w3-container w3-padding w3-black" >
+          <h4>Cursos Populares</h4>
+        </div>
+        <a href="https://www.w3schools.com/python/default.asp">
+        <ul class="w3-ul w3-hoverable w3-white" >
+          <li class="w3-padding-16" >
+            <img src="{% static 'assets/img/C1.png' %}" alt="Image" class="w3-left w3-margin-right" style="width:50px" >
+        </a>
+            <span class="w3-large">Python</span>
+            <br>
+            <span>El lenguaje mas creciente de los ultimos años</span>
+          </li>
+          <li class="w3-padding-16">
+            <img src="{% static 'assets/img/C2.jpg' %}" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+            <span class="w3-large">C++</span>
+            <br>
+            <span>Todo lo que necesitas para tus primeras materias de programación</span>
+          </li>
+          <li class="w3-padding-16">
+            <img src="{% static 'assets/img/C3.png' %}" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+            <span class="w3-large">React JSp</span>
+            <br>
+            <span>Utiliza tus habidades Web con este framework </span>
+          </li>
+          <li class="w3-padding-16">
+            <img src="{% static 'assets/img/C4.jpg' %}" alt="Image" class="w3-left w3-margin-right " style="width:50px">
+            <span class="w3-large">Java</span>
+            <br>
+            <span>Lenguaje por excelencia para la programacion orientada a objetos.</span>
+          </li>
+        </ul>
+      </div>
+      <hr>
+
+      <!-- Advertising -->
+      <div class="w3-white w3-margin">
+        <div class="w3-container w3-padding w3-black">
+          <h4>Video del Día</h4>
+        </div>
+        <div class="w3-container w3-white">
+          <div class="w3-container w3-display-container w3-light-grey w3-section" style="height:200px">
+            <iframe width="370" height="200" src="https://www.youtube.com/embed/chPhlsHoEPo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <!-- Tags -->
+      <div class="w3-white w3-margin">
+        <div class="w3-container w3-padding w3-black">
+          <h4>Etiquetas</h4>
+        </div>
+        <div class="w3-container w3-white">
+          <p>
+            <span class="w3-tag w3-black w3-margin-bottom">Desarrollo Web</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">VR</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">London</span>
+            <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Python</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">A.I</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Sweaters</span>
+            <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Big Data</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">JavaScript</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Accessories</span>
+            <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">React</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">C++</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Shopping</span>
+            <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Ingenieria de Software</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Java</span>
+          </p>
+        </div>
+      </div>
+      <hr>
+
+
+      <div class="w3-white w3-margin">
+        <div class="w3-container w3-xlarge w3-padding">
+            <a class="twitter-timeline" data-width="700" data-height="600" href="https://twitter.com/CUCEA_OFICIAL?ref_src=twsrc%5Etfw">Tweets by CUCEA_OFICIAL</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+      </div>
+      <hr>
+      
+      <!-- Subscribe -->
+      <div class="w3-white w3-margin">
+        <div class="w3-container w3-padding w3-black">
+          <h4>Subscribete</h4>
+        </div>
+        <div class="w3-container w3-white">
+          <p>Ingresa tu correo electronico para recibir los post mas actuales</p>
+          <p><input class="w3-input w3-border" type="text" placeholder="Enter e-mail" style="width:100%"></p>
+          <p><button type="button" onclick="document.getElementById('subscribe').style.display='block'" class="w3-button w3-block w3-red">Subscribete</button></p>
+        </div>
+      </div>
+
+    <!-- END About/Intro Menu -->
+    </div>
+
+  <!-- END GRID -->
+  </div>
+
+<!-- END w3-content -->
+</div>
+
+
+<!-- Subscribe Modal -->
+<div id="subscribe" class="w3-modal w3-animate-opacity">
+  <div class="w3-modal-content" style="padding:32px">
+    <div class="w3-container w3-white">
+      <i onclick="document.getElementById('subscribe').style.display='none'" class="fas fa-window-close w3-transparent w3-button w3-xlarge w3-right"></i>
+      <h2 class="w3-wide">SUBSCRIBETE</h2>
+      <p>Ingresa tu correo electronico para recibir los post mas actuales</p>
+      <p><input class="w3-input w3-border" type="text" placeholder="Enter e-mail"></p>
+      <button type="button" class="w3-button w3-block w3-padding-large w3-red w3-margin-bottom" onclick="document.getElementById('subscribe').style.display='none'">Subscribete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="w3-container w3-center w3-dark-grey" style="padding:32px">
+    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-facebook-official"></i></a>
+    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-instagram"></i></a>
+    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-snapchat"></i></a>
+    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-flickr"></i></a>
+    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-twitter"></i></a>
+    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-linkedin"></i></a>
+</footer>
+
+<script>
+// Toggle between hiding and showing blog replies/comments
+document.getElementById("myBtn").click();
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+function likeFunction(x) {
+  x.style.fontWeight = "bold";
+  x.innerHTML = "✓ Liked";
+}
+</script>
+
+</body>
+</html>
